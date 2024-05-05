@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class TaskTime extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['task_id', 'elapsed_time'];
 
-    public function taskTimes()
+    public function task()
     {
-        return $this->hasMany(TaskTime::class);
+        return $this->belongsTo(Task::class);
     }
 }

@@ -14,10 +14,10 @@ class TaskTableSeeder extends Seeder
     public function run(): void
     {
         $tasks = [
-            ['name' => 'Research', 'elapsed_time' => 0],
-            ['name' => 'Husle', 'elapsed_time' => 0],
-            ['name' => 'Gaming', 'elapsed_time' => 0],
-            ['name' => 'Sleep', 'elapsed_time' => 0],
+            ['name' => 'Research'],
+            ['name' => 'Husle'],
+            ['name' => 'Gaming'],
+            ['name' => 'Sleep'],
         ];
 
         foreach ($tasks as $task) {

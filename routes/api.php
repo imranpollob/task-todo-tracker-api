@@ -9,3 +9,4 @@ use Illuminate\Support\Facades\Route;
 // })->middleware('auth:sanctum');
 
 Route::apiResource('tasks', TaskController::class);
+Route::post('tasks/{task}/addtime', [TaskController::class, 'addTime']);

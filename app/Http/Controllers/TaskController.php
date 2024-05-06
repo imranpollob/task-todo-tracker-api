@@ -18,7 +18,7 @@ class TaskController extends BaseController
 
         $tasks = $tasks->map(function ($task) {
             $elapsed_time = $task->taskTimes()->whereDate('created_at', Carbon::today())->sum('elapsed_time');
-            $task->elapsed_time = $elapsed_time;
+            $task->elapsed_time = (int) $elapsed_time;
             return $task;
         });
 

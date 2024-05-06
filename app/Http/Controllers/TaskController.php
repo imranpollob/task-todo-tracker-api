@@ -8,17 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
 
+use function Pest\Laravel\delete;
 
 class TaskController extends BaseController
 {
     public function index(): JsonResponse
     {
-        $tasks = Task::with(['taskTimes' => function ($query) {
-            $query->whereDate('created_at', Carbon::today());
-        }])->get();
+        $tasks = Task::all();
 
         $tasks = $tasks->map(function ($task) {
-            $task->elapsed_time = $task->taskTimes->sum('elapsed_time');
+            $elapsed_time = $task->taskTimes()->whereDate('created_at', Carbon::today())->sum('elapsed_time');
+            $task->elapsed_time = $elapsed_time;
             return $task;
         });
 
@@ -39,6 +39,7 @@ class TaskController extends BaseController
         }
 
         $task = Task::create($input);
+        $task['elapsed_time'] = 0;
 
         return $this->sendResponse($task, 'Task created successfully.');
     }
@@ -77,7 +78,6 @@ class TaskController extends BaseController
 
     public function destroy(Task $task): JsonResponse
     {
-        // delete task and task times associated with it
         $task->taskTimes()->delete();
         $task->delete();
 

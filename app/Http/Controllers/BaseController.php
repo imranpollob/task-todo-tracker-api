@@ -17,6 +17,7 @@ class BaseController extends Controller
         return response()->json($response, 200);
     }
 
+
     public function sendError($error, $errorMessages = [], $code = 404)
     {
         $response = [
@@ -29,5 +30,17 @@ class BaseController extends Controller
         }
 
         return response()->json($response, $code);
+    }
+
+
+    public function sendResponseWithCookie($result, $message, $cookieContent)
+    {
+        $response = [
+            'success' => true,
+            'data'    => $result,
+            'message' => $message,
+        ];
+
+        return response()->json($response, 200)->cookie($cookieContent);
     }
 }

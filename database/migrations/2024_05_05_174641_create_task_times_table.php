@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('task_times', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('task_id')->constrained('tasks');
+            $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
             $table->integer('elapsed_time');
             $table->timestamps();
         });

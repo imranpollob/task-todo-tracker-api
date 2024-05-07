@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -20,8 +21,15 @@ class TaskTableSeeder extends Seeder
             ['name' => 'Sleep'],
         ];
 
+        // first user
+        $user = User::first();
+
         foreach ($tasks as $task) {
-            Task::create($task);
+            $user->tasks()->create($task);
         }
+
+        // foreach ($tasks as $task) {
+        //     Task::create($task);
+        // }
     }
 }

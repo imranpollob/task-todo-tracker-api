@@ -26,7 +26,7 @@ class AuthController extends BaseController
         $user = User::create($input);
         $success['auth_token'] =  $user->createToken('MyTaskTracker')->plainTextToken;
 
-        return $this->sendResponse($success, 'User register successfully.', $cookie);
+        return $this->sendResponse($success, 'User register successfully.');
     }
 
 
@@ -38,7 +38,7 @@ class AuthController extends BaseController
 
             return $this->sendResponse($success, 'User login successfully.');
         } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
+            return $this->register($request);
         }
     }
 }

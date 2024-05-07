@@ -14,7 +14,7 @@ class TaskController extends BaseController
 {
     public function index(): JsonResponse
     {
-        $tasks = Task::all();
+        $tasks = Task::where('user_id', auth()->id())->get();
 
         $tasks = $tasks->map(function ($task) {
             $elapsed_time = $task->taskTimes()->whereDate('created_at', Carbon::today())->sum('elapsed_time');
@@ -38,6 +38,7 @@ class TaskController extends BaseController
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        $input['user_id'] = auth()->id();
         $task = Task::create($input);
         $task['elapsed_time'] = 0;
 

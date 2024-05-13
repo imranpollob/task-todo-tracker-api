@@ -38,6 +38,9 @@ class AuthController extends BaseController
 
             return $this->sendResponse($success, 'User login successfully.');
         } else {
+            if (User::where('email', $request->email)->exists()) {
+                return $this->sendError('Password is incorrect.', [], 401);
+            }
             return $this->register($request);
         }
     }

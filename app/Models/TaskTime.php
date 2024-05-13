@@ -9,7 +9,7 @@ class TaskTime extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['task_id', 'elapsed_time'];
+    protected $fillable = ['task_id', 'elapsed_time', 'date'];
 
     public function task()
     {

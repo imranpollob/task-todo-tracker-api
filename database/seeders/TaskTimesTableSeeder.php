@@ -20,6 +20,7 @@ class TaskTimesTableSeeder extends Seeder
             TaskTime::create([
                 'task_id' => $task->id,
                 'elapsed_time' => 30,
+                'date' => Carbon::today(),
                 'created_at' => Carbon::today(),
                 'updated_at' => Carbon::today(),
             ]);
@@ -27,6 +28,7 @@ class TaskTimesTableSeeder extends Seeder
             TaskTime::create([
                 'task_id' => $task->id,
                 'elapsed_time' => 30,
+                'date' => Carbon::today(),
                 'created_at' => Carbon::yesterday(),
                 'updated_at' => Carbon::yesterday(),
             ]);

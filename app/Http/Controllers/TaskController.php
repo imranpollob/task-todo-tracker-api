@@ -12,12 +12,14 @@ use function Pest\Laravel\delete;
 
 class TaskController extends BaseController
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
+        $day = $request->query('day') ?? 0;
+        $date = Carbon::today()->addDays((int) $day);
         $tasks = Task::where('user_id', auth()->id())->get();
 
-        $tasks = $tasks->map(function ($task) {
-            $elapsed_time = $task->taskTimes()->whereDate('created_at', Carbon::today())->sum('elapsed_time');
+        $tasks = $tasks->map(function ($task) use ($date) {
+            $elapsed_time = $task->taskTimes()->whereDate('date', $date)->sum('elapsed_time');
             $task->elapsed_time = (int) $elapsed_time;
             return $task;
         });
@@ -92,6 +94,7 @@ class TaskController extends BaseController
 
         $validator = Validator::make($input, [
             'elapsed_time' => 'required|integer',
+            'day' => 'integer',
         ]);
 
         if ($validator->fails()) {
@@ -100,6 +103,7 @@ class TaskController extends BaseController
 
         $task->taskTimes()->create([
             'elapsed_time' => $input['elapsed_time'],
+            'date' => Carbon::today()->addDays($input['day'] ?? 0),
         ]);
 
         return $this->sendResponse($task, 'Time added to task successfully.');

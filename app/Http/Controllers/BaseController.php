@@ -6,13 +6,17 @@ use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
-    public function sendResponse($result, $message)
+    public function sendResponse($result, $message, $latest_task_time = null)
     {
         $response = [
             'success' => true,
             'data'    => $result,
             'message' => $message,
         ];
+
+        if ($latest_task_time) {
+            $response['latest_task_time'] = $latest_task_time;
+        }
 
         return response()->json($response, 200);
     }

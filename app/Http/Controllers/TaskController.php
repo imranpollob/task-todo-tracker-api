@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Task;
+use App\Models\TaskTime;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -20,11 +21,23 @@ class TaskController extends BaseController
 
         $tasks = $tasks->map(function ($task) use ($date) {
             $elapsed_time = $task->taskTimes()->whereDate('date', $date)->sum('elapsed_time');
+            $task->last_updated = $task->taskTimes()->whereDate('date', $date)->latest()->first()->created_at;
             $task->elapsed_time = (int) $elapsed_time;
+
+            // Get the latest task time for each task
+            // $latest_task_time = $task->taskTimes()->latest('created_at')->first();
+            // $task->last_updated_time = $latest_task_time ? $latest_task_time->created_at : null;
+
             return $task;
         });
 
-        return $this->sendResponse($tasks, 'Tasks retrieved successfully.');
+        // Get the latest task time for all tasks of the authenticated user
+        $task_ids = $tasks->pluck('id');
+        $latest_task_time = TaskTime::whereIn('task_id', $task_ids)->latest('created_at')->first();
+        $latest_task_time = $latest_task_time ? $latest_task_time->created_at : null;
+
+
+        return $this->sendResponse($tasks, 'Tasks retrieved successfully.', $latest_task_time);
     }
 
 

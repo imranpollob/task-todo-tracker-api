@@ -21,7 +21,6 @@ class TaskController extends BaseController
 
         $tasks = $tasks->map(function ($task) use ($date) {
             $elapsed_time = $task->taskTimes()->whereDate('date', $date)->sum('elapsed_time');
-            $task->last_updated = $task->taskTimes()->whereDate('date', $date)->latest()->first()->created_at;
             $task->elapsed_time = (int) $elapsed_time;
 
             // Get the latest task time for each task
